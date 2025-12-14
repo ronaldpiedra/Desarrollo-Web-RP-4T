@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Semana 3 - Desarrollo Web</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>Desarrollo de Aplicaciones Web</h1>
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#contenido">Contenido</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <section id="inicio">
+            <h2>Bienvenidos</h2>
+            <p>
+                Esta página web fue creada utilizando <strong>HTML5</strong> y
+                <em>CSS</em> con el objetivo de comprender la estructura semántica
+                y la organización correcta del contenido.
+            </p>
+        </section>
+
+        <section id="contenido">
+            <article>
+                <h3>Contenido principal</h3>
+                <p>
+                    En este artículo se integran distintos elementos como
+                    imágenes, videos, listas, tablas y formularios, aplicando
+                    buenas prácticas de desarrollo web.
+                </p>
+
+                <h3>Imagen de ejemplo</h3>
+                <img src="assets/img/imagen1.jpg" alt="Imagen de ejemplo del proyecto" width="300">
+
+                <h3>Video de ejemplo</h3>
+                <video controls width="320">
+                    <source src="assets/video/video1.mp4" type="video/mp4">
+                    Tu navegador no soporta video.
+                </video>
+            </article>
+
+            <section>
+                <h3>Listas</h3>
+
+                <h4>Lista ordenada</h4>
+                <ol>
+                    <li>Planificar el proyecto</li>
+                    <li>Escribir el código HTML</li>
+                    <li>Aplicar estilos CSS</li>
+                </ol>
+
+                <h4>Lista desordenada</h4>
+                <ul>
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>GitHub</li>
+                </ul>
+
+                <p>
+                    Puedes aprender más en
+                    <a href="https://developer.mozilla.org/es/" target="_blank">
+                        MDN Web Docs
+                    </a>.
+                </p>
+            </section>
+
+            <section>
+                <h3>Tabla de actividades</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Actividad</th>
+                            <th>Tiempo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Estudio</td>
+                            <td>1 hora</td>
+                        </tr>
+                        <tr>
+                            <td>Práctica</td>
+                            <td>2 horas</td>
+                        </tr>
+                        <tr>
+                            <td>Entrega</td>
+                            <td>30 minutos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="contacto">
+                <h3>Formulario de contacto</h3>
+                <form>
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" required>
+
+                    <label for="correo">Correo:</label>
+                    <input type="email" id="correo" required>
+
+                    <button type="submit">Enviar</button>
+                </form>
+            </section>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 - Ronald Piedra</p>
+    </footer>
+
+</body>
+</html>
