@@ -1,0 +1,73 @@
+<!doctype html>
+
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=divice-width, initial-scale=1.0">
+        <title>Galería Interactiva</title>
+    
+    
+    <link rel="stylesheet" href="styles.css">
+
+    </head>
+
+    <body>
+        <main class="container">
+
+            <header class="header">
+                <p class="subtitle">
+                    Agrega imágenes por URL, selecciónalas con clic y elíminalascon un botón o atajos de teclado
+            
+                </p>
+            </header>
+
+    <section class="controls" arial-label="Controles de galería">
+        
+        <input
+        id="imageUrl"
+        type="url"
+        placeholder="pega aquí una url de imagen segura"
+        autocomplete="off"
+        >
+
+    <button id="btnAdd" type="button">
+        Agregar imagen
+    </button>
+
+    <button id="btnDelete" type="button" class="danger">
+        Eliminar Imagen Seleccionada
+    </button>
+
+    <small id="msg" class="msg" arial-live="polite"></small>
+    </button>
+    </section>
+
+
+    <section>
+        <h2 class="sr-only">Galería</h2>
+
+        <div id="gallery" class="gallery" arial-label="Galería de imágebes">
+
+        </div>
+    </section>
+
+<footer class="footer">
+    <p>
+        <strong>atajos:</strong>
+        Enter = agregar | Delete/Backspace = eliminar selccionada | Esc = Quitar selección
+    </p>
+</footer>
+
+</main>
+
+<script src="script.js"></script>
+
+
+    </section>
+        </main>
+    </body>
+
+    </title>
+
+    </head>
+</html>
