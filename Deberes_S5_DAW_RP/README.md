@@ -16,6 +16,3 @@ Aplicación web que permite:
 - **Eliminar:** botón “Eliminar Imagen Seleccionada” o tecla Delete/Backspace.
 - **Quitar selección:** tecla ESC.
 
-## Enlaces (cuando publiques)
-- GitHub Pages: (pega aquí tu link)
-- Repositorio: (pega aquí tu link)
