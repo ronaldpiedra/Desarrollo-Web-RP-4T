@@ -1,0 +1,85 @@
+/* ===== ESTILO GENERAL DE LA PÁGINA ===== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(110, 199, 193);
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* ===== CAJA DEL FORMULARIO ===== */
+form {
+    background-color: white;
+    padding: 20px;
+    width: 320px;
+    border-radius: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== TÍTULO ===== */
+h1 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* ===== ETIQUETAS ===== */
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* ===== CAMPOS DE ENTRADA ===== */
+input {
+    width: 100%;
+    padding: 6px;
+    margin-top: 5px;
+    border: 2px solid #10c3ae;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* ===== CAMPO VÁLIDO ===== */
+input.valido {
+    border-color: green;
+}
+
+/* ===== CAMPO INVÁLIDO ===== */
+input.invalido {
+    border-color: red;
+}
+
+/* ===== MENSAJES DE ERROR ===== */
+small {
+    color: red;
+    font-size: 12px;
+}
+
+/* ===== BOTONES ===== */
+button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* ===== BOTÓN ENVIAR DESHABILITADO ===== */
+button:disabled {
+    background-color: rgb(177, 212, 169);
+    cursor: not-allowed;
+}
+
+/* ===== BOTÓN ENVIAR HABILITADO ===== */
+button:not(:disabled) {
+    background-color: #10c3ae;
+    color: white;
+}
+
+/* ===== BOTÓN REINICIAR ===== */
+button[type="reset"] {
+    background-color: #dddddd;
+    color: black;
+}
