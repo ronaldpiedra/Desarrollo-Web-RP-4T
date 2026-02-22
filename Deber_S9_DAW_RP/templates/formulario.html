@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Formulario{% endblock %}
+
+{% block content %}
+  <h1>Formulario</h1>
+
+  <form method="POST">
+    <label>Nombre:</label>
+    <input type="text" name="nombre" required>
+    <button type="submit">Enviar</button>
+  </form>
+
+  {% if mensaje %}
+    <p style="margin-top: 10px;">{{ mensaje }}</p>
+  {% endif %}
+{% endblock %}

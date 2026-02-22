@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Edad{% endblock %}
+
+{% block content %}
+  <h1>Tienes {{ edad }} años</h1>
+
+  {% if edad >= 18 %}
+    <p>Eres mayor de edad.</p>
+  {% else %}
+    <p>Eres menor de edad.</p>
+  {% endif %}
+{% endblock %}

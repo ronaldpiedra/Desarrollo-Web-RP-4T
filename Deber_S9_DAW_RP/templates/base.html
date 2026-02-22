@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}{{ titulo }}{% endblock %}</title>
+</head>
+<body>
+
+  <header>
+    <h2>Proyecto Flask - Semana 10</h2>
+  </header>
+
+  <nav>
+    <a href="/">Inicio</a> |
+    <a href="/about">Acerca de</a> |
+    <a href="/formulario">Formulario</a> |
+    <a href="/usuario/Ronald">Usuario</a> |
+    <a href="/edad/17">Edad</a>
+  </nav>
+
+  <hr>
+
+  {% block content %}{% endblock %}
+
+  <hr>
+
+  <footer>
+    <p>UEA - Desarrollo Web</p>
+  </footer>
+
+</body>
+</html>
