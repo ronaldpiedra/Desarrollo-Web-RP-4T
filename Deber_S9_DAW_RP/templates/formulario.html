@@ -5,13 +5,31 @@
 {% block content %}
   <h1>Formulario</h1>
 
-  <form method="POST">
-    <label>Nombre:</label>
-    <input type="text" name="nombre" required>
-    <button type="submit">Enviar</button>
-  </form>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div style="margin: 10px 0;">
+        {% for category, message in messages %}
+          <p><b>{{ message }}</b></p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
 
-  {% if mensaje %}
-    <p style="margin-top: 10px;">{{ mensaje }}</p>
-  {% endif %}
+  <form method="POST">
+    {{ form.hidden_tag() }}
+
+    <label>{{ form.nombre.label }}</label><br>
+    {{ form.nombre(size=30) }}<br>
+
+    {% if form.nombre.errors %}
+      <ul style="color: red; margin: 6px 0 0 0;">
+        {% for error in form.nombre.errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <br>
+    {{ form.submit() }}
+  </form>
 {% endblock %}

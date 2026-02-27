@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, flash, redirect, url_for
+from forms import FormularioNombre
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "clave_segura_123"
 
 @app.route("/")
 def home():
@@ -20,10 +22,14 @@ def edad(edad):
 
 @app.route("/formulario", methods=["GET", "POST"])
 def formulario():
-    if request.method == "POST":
-        nombre = request.form.get("nombre", "").strip()
-        return render_template("formulario.html", titulo="Formulario", mensaje=f"POST recibido con éxito ✅ (Nombre: {nombre})")
-    return render_template("formulario.html", titulo="Formulario")
+    form = FormularioNombre()
+
+    if form.validate_on_submit():
+        nombre = form.nombre.data.strip()
+        flash(f"POST recibido con éxito ✅ (Nombre: {nombre})", "success")
+        return redirect(url_for("formulario"))
+
+    return render_template("formulario.html", titulo="Formulario", form=form)
 
 if __name__ == "__main__":
     app.run(debug=True)
