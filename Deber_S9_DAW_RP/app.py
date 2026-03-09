@@ -1,8 +1,10 @@
 from flask import Flask, render_template, flash, redirect, url_for
 from forms import FormularioNombre
+from inventario.inventario import inventario_bp
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "clave_segura_123"
+app.register_blueprint(inventario_bp)
 
 @app.route("/")
 def home():

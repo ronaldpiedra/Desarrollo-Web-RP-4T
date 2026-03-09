@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Datos{% endblock %}
+
+{% block content %}
+<h2>Persistencia TXT / JSON / CSV (y guardado en SQLite ORM)</h2>
+
+<form method="post">
+  <label>Nombre:</label>
+  <input name="nombre" required>
+
+  <label>Precio:</label>
+  <input name="precio" required>
+
+  <label>Cantidad:</label>
+  <input name="cantidad" required>
+
+  <button type="submit">Guardar</button>
+</form>
+
+<hr>
+
+<h3>TXT</h3>
+<table border="1" cellpadding="6">
+  <tr><th>Nombre</th><th>Precio</th><th>Cantidad</th></tr>
+  {% for d in datos_txt %}
+  <tr>
+    <td>{{ d["nombre"] }}</td>
+    <td>{{ d["precio"] }}</td>
+    <td>{{ d["cantidad"] }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h3>JSON</h3>
+<table border="1" cellpadding="6">
+  <tr><th>Nombre</th><th>Precio</th><th>Cantidad</th></tr>
+  {% for d in datos_json %}
+  <tr>
+    <td>{{ d["nombre"] }}</td>
+    <td>{{ d["precio"] }}</td>
+    <td>{{ d["cantidad"] }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h3>CSV</h3>
+<table border="1" cellpadding="6">
+  <tr><th>Nombre</th><th>Precio</th><th>Cantidad</th></tr>
+  {% for d in datos_csv %}
+  <tr>
+    <td>{{ d["nombre"] }}</td>
+    <td>{{ d["precio"] }}</td>
+    <td>{{ d["cantidad"] }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% if datos_txt|length == 0 %}
+<p><em>Aun no hay registros. Guarda uno con el formulario de arriba.</em></p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Productos{% endblock %}
+
+{% block content %}
+<h2>Productos en SQLite (SQLAlchemy ORM)</h2>
+
+<p><a href="{{ url_for('inventario.producto_nuevo') }}">+ Nuevo producto</a></p>
+
+<table border="1" cellpadding="6">
+  <tr><th>ID</th><th>Nombre</th><th>Precio</th><th>Cantidad</th></tr>
+  {% for p in productos %}
+  <tr>
+    <td>{{ p.id }}</td>
+    <td>{{ p.nombre }}</td>
+    <td>{{ p.precio }}</td>
+    <td>{{ p.cantidad }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

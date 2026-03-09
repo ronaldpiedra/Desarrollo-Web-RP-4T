@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Nuevo producto{% endblock %}
+
+{% block content %}
+<h2>Nuevo Producto</h2>
+
+<form method="post">
+  <label>Nombre:</label>
+  <input name="nombre" required>
+
+  <label>Precio:</label>
+  <input name="precio" required>
+
+  <label>Cantidad:</label>
+  <input name="cantidad" required>
+
+  <button type="submit">Guardar</button>
+</form>
+{% endblock %}
