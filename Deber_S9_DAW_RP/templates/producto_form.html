@@ -1,19 +1,22 @@
 {% extends "base.html" %}
-{% block title %}Nuevo producto{% endblock %}
+{% block title %}{% if editar %}Editar producto{% else %}Nuevo producto{% endif %}{% endblock %}
 
 {% block content %}
-<h2>Nuevo Producto</h2>
+<h2>{% if editar %}Editar Producto{% else %}Nuevo Producto{% endif %}</h2>
 
 <form method="post">
   <label>Nombre:</label>
-  <input name="nombre" required>
+  <input name="nombre" value="{{ producto.nombre if producto else '' }}" required>
+
+  <label>Descripción:</label>
+  <input name="descripcion" value="{{ producto.descripcion if producto else '' }}">
 
   <label>Precio:</label>
-  <input name="precio" required>
+  <input name="precio" value="{{ producto.precio if producto else '' }}" required>
 
-  <label>Cantidad:</label>
-  <input name="cantidad" required>
+  <label>Stock:</label>
+  <input name="stock" value="{{ producto.stock if producto else '' }}" required>
 
-  <button type="submit">Guardar</button>
+  <button type="submit">{% if editar %}Actualizar{% else %}Guardar{% endif %}</button>
 </form>
 {% endblock %}

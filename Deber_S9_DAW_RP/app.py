@@ -1,6 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for
 from forms import FormularioNombre
 from inventario.inventario import inventario_bp
+from Conexion.conexion import obtener_conexion
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "clave_segura_123"
@@ -32,6 +33,13 @@ def formulario():
         return redirect(url_for("formulario"))
 
     return render_template("formulario.html", titulo="Formulario", form=form)
+
+try:
+    conexion = obtener_conexion()
+    print("Conexión exitosa a MySQL")
+    conexion.close()
+except Exception as e:
+    print("Error de conexion:", e)
 
 if __name__ == "__main__":
     app.run(debug=True)
