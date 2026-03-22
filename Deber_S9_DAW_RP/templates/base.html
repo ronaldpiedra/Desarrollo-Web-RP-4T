@@ -7,7 +7,7 @@
 <body>
 
   <header>
-    <h2>Proyecto Flask - Semana 10</h2>
+    <h2>Proyecto Flask - Semana 14</h2>
   </header>
 
   <nav>
@@ -15,11 +15,24 @@
     <a href="/about">Acerca de</a> |
     <a href="/formulario">Formulario</a> |
     <a href="/usuario/Ronald">Usuario</a> |
-    <a href="/edad/17">Edad</a>
-    | <a href="/datos">Datos</a> | <a href="/productos">Productos</a>
+    <a href="/edad/17">Edad</a> |
+    <a href="/datos">Datos</a> |
+    <a href="/productos">Productos</a> |
+    <a href="/registro">Registro</a> |
+    <a href="/login">Login</a> |
+    <a href="/panel">Panel</a> |
+    <a href="/logout">Cerrar sesión</a>
   </nav>
 
   <hr>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <p><strong>{{ category }}:</strong> {{ message }}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
 
   {% block content %}{% endblock %}
 

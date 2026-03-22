@@ -1,0 +1,17 @@
+CREATE DATABASE IF NOT EXISTS proyecto_s13;
+USE proyecto_s13;
+
+CREATE TABLE IF NOT EXISTS usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    mail VARCHAR(100) NOT NULL UNIQUE,
+    pasword VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS productos (
+    id_producto INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL
+);

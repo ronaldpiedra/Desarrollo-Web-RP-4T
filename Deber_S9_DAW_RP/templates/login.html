@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Iniciar sesión</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.email.label }}<br>
+        {{ form.email(size=35) }}
+    </p>
+
+    <p>
+        {{ form.password.label }}<br>
+        {{ form.password(size=35) }}
+    </p>
+
+    <p>{{ form.submit() }}</p>
+</form>
+
+<p>¿No tiene cuenta? <a href="{{ url_for('registro') }}">Regístrese aquí</a></p>
+{% endblock %}

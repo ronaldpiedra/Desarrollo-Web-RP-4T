@@ -2,6 +2,7 @@ import os
 import json
 import csv
 from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import login_required
 
 from Conexion.conexion import obtener_conexion
 
@@ -115,6 +116,7 @@ def leer_csv():
 # Rutas Flask
 # --------------------------
 @inventario_bp.route("/datos", methods=["GET", "POST"])
+@login_required
 def datos():
     """
     Guarda y muestra datos en TXT, JSON y CSV.
@@ -148,6 +150,7 @@ def datos():
 
 
 @inventario_bp.route("/productos")
+@login_required
 def productos():
     """Lista productos desde MySQL."""
     conexion = obtener_conexion()
@@ -163,6 +166,7 @@ def productos():
 
 
 @inventario_bp.route("/productos/nuevo", methods=["GET", "POST"])
+@login_required
 def producto_nuevo():
     """Formulario para crear producto en MySQL."""
     if request.method == "POST":
@@ -200,6 +204,7 @@ def producto_nuevo():
 
 
 @inventario_bp.route("/productos/editar/<int:id_producto>", methods=["GET", "POST"])
+@login_required
 def producto_editar(id_producto):
     """Edita un producto en MySQL."""
     conexion = obtener_conexion()
@@ -243,6 +248,7 @@ def producto_editar(id_producto):
 
 
 @inventario_bp.route("/productos/eliminar/<int:id_producto>")
+@login_required
 def producto_eliminar(id_producto):
     """Elimina un producto en MySQL."""
     conexion = obtener_conexion()
