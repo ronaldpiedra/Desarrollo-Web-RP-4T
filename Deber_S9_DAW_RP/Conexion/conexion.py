@@ -5,7 +5,7 @@ def obtener_conexion():
         host="localhost",
         user="root",
         password="123456",
-        database="proyecto_s13",
+        database="desarrollo_web_sem15",
         port=3307
     )
     return conexion
