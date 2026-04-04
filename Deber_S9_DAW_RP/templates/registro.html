@@ -1,28 +1,50 @@
 {% extends "base.html" %}
 
+{% block title %}Registro{% endblock %}
+{% block page_title %}Registro de usuario{% endblock %}
+
 {% block content %}
-<h2>Registro de usuario</h2>
+<div class="card form-card">
+    <div class="card-body">
+        <h2 class="page-title">Registro de usuario</h2>
+        <p class="page-subtitle">Complete los campos para crear una cuenta.</p>
 
-<form method="POST">
-    {{ form.hidden_tag() }}
+        <form method="POST">
+            {{ form.hidden_tag() }}
 
-    <p>
-        {{ form.nombre.label }}<br>
-        {{ form.nombre(size=35) }}
-    </p>
+            <div class="form-group">
+                {{ form.nombre.label(class="form-label") }}
+                {{ form.nombre(class="form-control") }}
+                {% for error in form.nombre.errors %}
+                    <div class="alert alert-danger" style="margin-top:8px;">{{ error }}</div>
+                {% endfor %}
+            </div>
 
-    <p>
-        {{ form.email.label }}<br>
-        {{ form.email(size=35) }}
-    </p>
+            <div class="form-group">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control") }}
+                {% for error in form.email.errors %}
+                    <div class="alert alert-danger" style="margin-top:8px;">{{ error }}</div>
+                {% endfor %}
+            </div>
 
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password(size=35) }}
-    </p>
+            <div class="form-group">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+                {% for error in form.password.errors %}
+                    <div class="alert alert-danger" style="margin-top:8px;">{{ error }}</div>
+                {% endfor %}
+            </div>
 
-    <p>{{ form.submit() }}</p>
-</form>
+            <div class="actions">
+                {{ form.submit(class="btn btn-primary") }}
+                <a href="{{ url_for('login') }}" class="btn btn-secondary">Ir al login</a>
+            </div>
+        </form>
 
-<p>¿Ya tiene cuenta? <a href="{{ url_for('login') }}">Inicie sesión aquí</a></p>
+        <p style="margin-top:18px;">
+            ¿Ya tiene cuenta? <a href="{{ url_for('login') }}">Inicie sesión aquí</a>
+        </p>
+    </div>
+</div>
 {% endblock %}

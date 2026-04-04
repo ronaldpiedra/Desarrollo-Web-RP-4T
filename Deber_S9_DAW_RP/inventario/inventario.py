@@ -1,7 +1,7 @@
 import os
 import json
 import csv
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required
 
 from Conexion.conexion import obtener_conexion
@@ -23,11 +23,9 @@ def asegurar_data_dir():
     """Crea carpeta data/ y archivos base si no existen."""
     os.makedirs(DATA_DIR, exist_ok=True)
 
-    # TXT
     if not os.path.exists(TXT_PATH):
         open(TXT_PATH, "w", encoding="utf-8").close()
 
-    # JSON
     if not os.path.exists(JSON_PATH):
         with open(JSON_PATH, "w", encoding="utf-8") as f:
             json.dump([], f, ensure_ascii=False, indent=2)
@@ -39,7 +37,6 @@ def asegurar_data_dir():
             with open(JSON_PATH, "w", encoding="utf-8") as f:
                 json.dump([], f, ensure_ascii=False, indent=2)
 
-    # CSV
     if not os.path.exists(CSV_PATH):
         with open(CSV_PATH, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=["nombre", "precio", "cantidad"])
@@ -139,6 +136,10 @@ def datos():
             guardar_en_json(registro_archivo)
             guardar_en_csv(registro_archivo)
 
+            flash("Datos guardados correctamente en TXT, JSON y CSV.", "success")
+        else:
+            flash("Complete todos los campos.", "warning")
+
         return redirect(url_for("inventario.datos"))
 
     return render_template(
@@ -152,11 +153,27 @@ def datos():
 @inventario_bp.route("/productos")
 @login_required
 def productos():
-    """Lista productos desde MySQL."""
+    """Lista productos con categoría y proveedor."""
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
 
-    cursor.execute("SELECT * FROM productos ORDER BY id_producto DESC")
+    sql = """
+        SELECT 
+            p.id_producto,
+            p.nombre,
+            p.descripcion,
+            p.precio,
+            p.stock,
+            p.id_categoria,
+            p.id_proveedor,
+            c.nombre AS categoria,
+            pr.nombre AS proveedor
+        FROM productos p
+        INNER JOIN categorias c ON p.id_categoria = c.id_categoria
+        INNER JOIN proveedores pr ON p.id_proveedor = pr.id_proveedor
+        ORDER BY p.id_producto DESC
+    """
+    cursor.execute(sql)
     lista = cursor.fetchall()
 
     cursor.close()
@@ -168,26 +185,50 @@ def productos():
 @inventario_bp.route("/productos/nuevo", methods=["GET", "POST"])
 @login_required
 def producto_nuevo():
-    """Formulario para crear producto en MySQL."""
+    """Formulario para crear producto."""
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+
+    cursor.execute("SELECT id_categoria, nombre FROM categorias ORDER BY nombre ASC")
+    categorias = cursor.fetchall()
+
+    cursor.execute("SELECT id_proveedor, nombre FROM proveedores ORDER BY nombre ASC")
+    proveedores = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+
     if request.method == "POST":
         nombre = request.form.get("nombre", "").strip()
         descripcion = request.form.get("descripcion", "").strip()
         precio_txt = request.form.get("precio", "").strip().replace(",", ".")
         stock_txt = request.form.get("stock", "").strip()
+        id_categoria_txt = request.form.get("id_categoria", "").strip()
+        id_proveedor_txt = request.form.get("id_proveedor", "").strip()
 
-        if nombre and precio_txt and stock_txt:
+        if nombre and precio_txt and stock_txt and id_categoria_txt and id_proveedor_txt:
             try:
                 precio_num = float(precio_txt)
                 stock_num = int(stock_txt)
+                id_categoria = int(id_categoria_txt)
+                id_proveedor = int(id_proveedor_txt)
 
                 conexion = obtener_conexion()
                 cursor = conexion.cursor()
 
                 sql = """
-                    INSERT INTO productos (nombre, descripcion, precio, stock)
-                    VALUES (%s, %s, %s, %s)
+                    INSERT INTO productos
+                    (nombre, descripcion, precio, stock, id_categoria, id_proveedor)
+                    VALUES (%s, %s, %s, %s, %s, %s)
                 """
-                valores = (nombre, descripcion, precio_num, stock_num)
+                valores = (
+                    nombre,
+                    descripcion,
+                    precio_num,
+                    stock_num,
+                    id_categoria,
+                    id_proveedor
+                )
 
                 cursor.execute(sql, valores)
                 conexion.commit()
@@ -195,48 +236,37 @@ def producto_nuevo():
                 cursor.close()
                 conexion.close()
 
+                flash("Producto registrado correctamente.", "success")
+                return redirect(url_for("inventario.productos"))
+
             except ValueError:
-                pass
+                flash("Revise precio, stock, categoría y proveedor.", "danger")
+            except Exception:
+                flash("Ocurrió un error al registrar el producto.", "danger")
+        else:
+            flash("Todos los campos obligatorios deben estar completos.", "warning")
 
-        return redirect(url_for("inventario.productos"))
-
-    return render_template("producto_form.html", producto=None, editar=False)
+    return render_template(
+        "producto_form.html",
+        producto=None,
+        editar=False,
+        categorias=categorias,
+        proveedores=proveedores
+    )
 
 
 @inventario_bp.route("/productos/editar/<int:id_producto>", methods=["GET", "POST"])
 @login_required
 def producto_editar(id_producto):
-    """Edita un producto en MySQL."""
+    """Edita un producto."""
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
 
-    if request.method == "POST":
-        nombre = request.form.get("nombre", "").strip()
-        descripcion = request.form.get("descripcion", "").strip()
-        precio_txt = request.form.get("precio", "").strip().replace(",", ".")
-        stock_txt = request.form.get("stock", "").strip()
+    cursor.execute("SELECT id_categoria, nombre FROM categorias ORDER BY nombre ASC")
+    categorias = cursor.fetchall()
 
-        if nombre and precio_txt and stock_txt:
-            try:
-                precio_num = float(precio_txt)
-                stock_num = int(stock_txt)
-
-                sql = """
-                    UPDATE productos
-                    SET nombre = %s, descripcion = %s, precio = %s, stock = %s
-                    WHERE id_producto = %s
-                """
-                valores = (nombre, descripcion, precio_num, stock_num, id_producto)
-
-                cursor.execute(sql, valores)
-                conexion.commit()
-
-                cursor.close()
-                conexion.close()
-
-                return redirect(url_for("inventario.productos"))
-            except ValueError:
-                pass
+    cursor.execute("SELECT id_proveedor, nombre FROM proveedores ORDER BY nombre ASC")
+    proveedores = cursor.fetchall()
 
     cursor.execute("SELECT * FROM productos WHERE id_producto = %s", (id_producto,))
     producto = cursor.fetchone()
@@ -244,13 +274,77 @@ def producto_editar(id_producto):
     cursor.close()
     conexion.close()
 
-    return render_template("producto_form.html", producto=producto, editar=True)
+    if not producto:
+        flash("El producto no existe.", "danger")
+        return redirect(url_for("inventario.productos"))
+
+    if request.method == "POST":
+        nombre = request.form.get("nombre", "").strip()
+        descripcion = request.form.get("descripcion", "").strip()
+        precio_txt = request.form.get("precio", "").strip().replace(",", ".")
+        stock_txt = request.form.get("stock", "").strip()
+        id_categoria_txt = request.form.get("id_categoria", "").strip()
+        id_proveedor_txt = request.form.get("id_proveedor", "").strip()
+
+        if nombre and precio_txt and stock_txt and id_categoria_txt and id_proveedor_txt:
+            try:
+                precio_num = float(precio_txt)
+                stock_num = int(stock_txt)
+                id_categoria = int(id_categoria_txt)
+                id_proveedor = int(id_proveedor_txt)
+
+                conexion = obtener_conexion()
+                cursor = conexion.cursor()
+
+                sql = """
+                    UPDATE productos
+                    SET nombre = %s,
+                        descripcion = %s,
+                        precio = %s,
+                        stock = %s,
+                        id_categoria = %s,
+                        id_proveedor = %s
+                    WHERE id_producto = %s
+                """
+                valores = (
+                    nombre,
+                    descripcion,
+                    precio_num,
+                    stock_num,
+                    id_categoria,
+                    id_proveedor,
+                    id_producto
+                )
+
+                cursor.execute(sql, valores)
+                conexion.commit()
+
+                cursor.close()
+                conexion.close()
+
+                flash("Producto actualizado correctamente.", "success")
+                return redirect(url_for("inventario.productos"))
+
+            except ValueError:
+                flash("Revise precio, stock, categoría y proveedor.", "danger")
+            except Exception:
+                flash("Ocurrió un error al actualizar el producto.", "danger")
+        else:
+            flash("Todos los campos obligatorios deben estar completos.", "warning")
+
+    return render_template(
+        "producto_form.html",
+        producto=producto,
+        editar=True,
+        categorias=categorias,
+        proveedores=proveedores
+    )
 
 
 @inventario_bp.route("/productos/eliminar/<int:id_producto>")
 @login_required
 def producto_eliminar(id_producto):
-    """Elimina un producto en MySQL."""
+    """Elimina un producto."""
     conexion = obtener_conexion()
     cursor = conexion.cursor()
 
@@ -260,4 +354,5 @@ def producto_eliminar(id_producto):
     cursor.close()
     conexion.close()
 
+    flash("Producto eliminado correctamente.", "success")
     return redirect(url_for("inventario.productos"))

@@ -1,8 +1,55 @@
 {% extends "base.html" %}
-
 {% block title %}Inicio{% endblock %}
+{% block page_title %}Panel principal{% endblock %}
 
 {% block content %}
-  <h1>Semana 10 OK ✅</h1>
-  <p>Esta página se renderiza con Jinja2 y hereda de base.html.</p>
+<div class="hero-card">
+    <div>
+        <h2 class="hero-title">Bienvenido a StormMoodle</h2>
+        <p class="hero-text">
+        </p>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Productos registrados</h3>
+        <p>{{ total_productos|default(0) }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Usuarios del sistema</h3>
+        <p>{{ total_usuarios|default(0) }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Módulos activos</h3>
+        <p>{{ total_modulos|default(3) }}</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="page-header">
+            <div>
+                <h2 class="page-title">Accesos rápidos</h2>
+                <p class="page-subtitle">Navegación directa a las secciones principales del sistema.</p>
+            </div>
+        </div>
+
+<div class="quick-actions">
+    <a href="/productos" class="quick-action action-blue">
+        <span class="quick-action-title">Gestionar productos</span>
+    </a>
+
+    <a href="/panel" class="quick-action action-green">
+        <span class="quick-action-title">Ir al panel</span>
+    </a>
+
+    <a href="/login" class="quick-action action-orange">
+        <span class="quick-action-title">Iniciar sesión</span>
+    </a>
+</div>
+    </div>
+</div>
 {% endblock %}

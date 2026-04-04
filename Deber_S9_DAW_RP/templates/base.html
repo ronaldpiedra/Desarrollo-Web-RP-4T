@@ -2,45 +2,71 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}{{ titulo }}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ titulo if titulo else 'Sistema Web' }}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
-  <header>
-    <h2>Proyecto Flask - Semana 14</h2>
-  </header>
+  <div class="app-layout">
+    
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-brand">
+          <h2>StormMoodle</h2>
+          <p>Sistema de gestión web</p>
+        </div>
 
-  <nav>
-    <a href="/">Inicio</a> |
-    <a href="/about">Acerca de</a> |
-    <a href="/formulario">Formulario</a> |
-    <a href="/usuario/Ronald">Usuario</a> |
-    <a href="/edad/17">Edad</a> |
-    <a href="/datos">Datos</a> |
-    <a href="/productos">Productos</a> |
-    <a href="/registro">Registro</a> |
-    <a href="/login">Login</a> |
-    <a href="/panel">Panel</a> |
-    <a href="/logout">Cerrar sesión</a>
-  </nav>
+<nav class="sidebar-menu">
+  <a href="/" class="sidebar-link">Inicio</a>
+  <a href="/productos" class="sidebar-link">Productos</a>
+  <a href="/registro" class="sidebar-link">Registro</a>
+  <a href="/login" class="sidebar-link">Login</a>
+  <a href="/panel" class="sidebar-link">Panel</a>
+  <a href="/logout" class="sidebar-link logout-link">Cerrar sesión</a>
+</nav>
+      </div>
 
-  <hr>
+      <div class="sidebar-footer">
+        <p>UEA - Desarrollo Web</p>
+      </div>
+    </aside>
 
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages %}
-        <p><strong>{{ category }}:</strong> {{ message }}</p>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div>
+          <h1 class="topbar-title">{% block page_title %}Proyecto Flask - Semana 16{% endblock %}</h1>
+          <p class="topbar-subtitle"></p>
+        </div>
 
-  {% block content %}{% endblock %}
+        {% if current_user.is_authenticated %}
+          <div class="topbar-user">
+            Bienvenido, {{ current_user.nombre if current_user.nombre else current_user.username }}
+          </div>
+        {% else %}
+          <div class="topbar-user">
+            Invitado
+          </div>
+        {% endif %}
+      </header>
 
-  <hr>
+      <main class="main-content">
 
-  <footer>
-    <p>UEA - Desarrollo Web</p>
-  </footer>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category if category else 'success' }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+
+  </div>
 
 </body>
 </html>

@@ -94,7 +94,7 @@ def load_user(user_id):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
     cursor.execute(
-        "SELECT id_usuario, nombre, mail, pasword FROM usuarios WHERE id_usuario = %s",
+        "SELECT id_usuario, nombre, mail, password FROM usuarios WHERE id_usuario = %s",
         (user_id,)
     )
     fila = cursor.fetchone()
@@ -168,7 +168,7 @@ def registro():
         password_hash = generate_password_hash(password)
 
         cursor.execute(
-            "INSERT INTO usuarios (nombre, mail, pasword) VALUES (%s, %s, %s)",
+            "INSERT INTO usuarios (nombre, mail, password) VALUES (%s, %s, %s)",
             (nombre, email, password_hash)
         )
         conexion.commit()
@@ -192,7 +192,7 @@ def login():
         conexion = obtener_conexion()
         cursor = conexion.cursor()
         cursor.execute(
-            "SELECT id_usuario, nombre, mail, pasword FROM usuarios WHERE mail = %s",
+            "SELECT id_usuario, nombre, mail, password FROM usuarios WHERE mail = %s",
             (email,)
         )
         fila = cursor.fetchone()
